@@ -1,0 +1,6 @@
+{
+  "name": "茶飲點單系統",
+  "description": "提供前台飲品客製化點單與過往紀錄查詢，及後台管理管理者密碼驗證、即時庫存更新與每日營收報表 Excel 導出功能。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
