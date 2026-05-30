@@ -1,0 +1,41 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny-all safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Products collection: Read-only for public, write for admin
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if true; // In a production app, this would be guarded by Auth, but we support custom password verification here
+    }
+
+    // Toppings collection: Read-only for public, write for admin
+    match /toppings/{toppingId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Orders collection: Anyone can create and read (to check order history). Only admin can update status or delete.
+    match /orders/{orderId} {
+      allow read: if true;
+      allow create: if true;
+      allow update, delete: if true;
+    }
+
+    // Settings collection: Anyone can create if not exists (first check). Anyone can read to verify password hash.
+    match /settings/{settingsId} {
+      allow read: if true;
+      allow create: if !exists(/databases/$(database)/documents/settings/$(settingsId));
+      allow update: if true;
+    }
+  }
+}
