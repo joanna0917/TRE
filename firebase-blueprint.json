@@ -1,0 +1,75 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A tea drink on the menu",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "priceM": { "type": "number" },
+        "priceL": { "type": "number" },
+        "stockM": { "type": "number" },
+        "stockL": { "type": "number" },
+        "category": { "type": "string" }
+      },
+      "required": ["id", "name", "priceM", "priceL", "stockM", "stockL"]
+    },
+    "Topping": {
+      "title": "Topping",
+      "description": "An optional topping for customizable drinks",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "stock": { "type": "number" }
+      },
+      "required": ["id", "name", "price", "stock"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A customer order containing tea drinks",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "preparing", "completed", "cancelled"] },
+        "items": { "type": "array" },
+        "total": { "type": "number" },
+        "quantity": { "type": "number" },
+        "clientName": { "type": "string" },
+        "clientPhone": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "status", "items", "total", "quantity", "createdAt"]
+    },
+    "Settings": {
+      "title": "Settings",
+      "description": "System-wide admin settings",
+      "type": "object",
+      "properties": {
+        "adminPasswordHash": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["adminPasswordHash"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Active tea products catalog with M and L sizing stock"
+    },
+    "/toppings/{toppingId}": {
+      "schema": "Topping",
+      "description": "Add-on topping inventory items"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Submitted customer orders for processing and records"
+    },
+    "/settings/{settingsId}": {
+      "schema": "Settings",
+      "description": "Store hashed admin security passphrase"
+    }
+  }
+}
